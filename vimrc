@@ -3,15 +3,16 @@
 "     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 call plug#begin()
-Plug 'tpope/vim-sensible'
-Plug 'tomasr/molokai'
+Plug '/usr/local/opt/fzf'
+Plug 'airblade/vim-gitgutter'
+Plug 'itchyny/lightline.vim'
+Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
-Plug 'jnurmine/zenburn'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'jceb/vim-orgmode'
-Plug 'derekwyatt/vim-scala'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'sheerun/vim-polyglot'
+Plug 'tomasr/molokai'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-sensible'
+Plug 'w0rp/ale'
 call plug#end()
 
 " Color
@@ -52,5 +53,13 @@ set foldmethod=indent   " fold based on indent level
 " Leader
 let mapleader=","       " leader is comma
 
-" Airline
-let g:airline_theme='molokai'
+" fzf
+nmap <leader>b :Buffers<CR>
+nmap <leader>f :Files<CR>
+" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
