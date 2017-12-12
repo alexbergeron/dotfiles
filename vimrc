@@ -53,10 +53,12 @@ set foldmethod=indent   " fold based on indent level
 " Leader
 let mapleader=","       " leader is comma
 
+" goyo
+nmap <leader>d :Goyo<CR>
+
 " fzf
 nmap <leader>b :Buffers<CR>
 nmap <leader>f :Files<CR>
-" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
