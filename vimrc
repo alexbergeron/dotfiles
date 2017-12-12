@@ -3,9 +3,9 @@
 "     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 call plug#begin()
-Plug '/usr/local/opt/fzf'
 Plug 'airblade/vim-gitgutter'
 Plug 'itchyny/lightline.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'sheerun/vim-polyglot'
@@ -42,7 +42,7 @@ set hlsearch            " highlight matches
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
-" Folding " J'essaie
+" Folding
 set foldenable          " enable folding
 set foldlevelstart=10   " open most folds by default
 set foldnestmax=10      " 10 nested fold max
