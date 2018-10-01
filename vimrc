@@ -8,7 +8,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
-Plug 'saltstack/salt-vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'tomasr/molokai'
 Plug 'tpope/vim-fugitive'
