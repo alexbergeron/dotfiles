@@ -3,6 +3,8 @@
 "     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 call plug#begin()
+Plug 'aklt/plantuml-syntax'
+Plug 'dense-analysis/ale'
 Plug 'itchyny/lightline.vim'
 Plug 'jnurmine/Zenburn'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf' }
@@ -15,8 +17,14 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-rvm'
 Plug 'tpope/vim-sensible'
-Plug 'w0rp/ale'
 Plug 'wincent/terminus'
+
+if has('nvim')
+  Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'kristijanhusak/defx-icons'
+  Plug 'kristijanhusak/defx-git'
+endif
 call plug#end()
 
 " Color
@@ -28,7 +36,7 @@ set tabstop=2       " number of visual spaces per TAB
 set softtabstop=2   " number of spaces in tab when editing
 set shiftwidth=2
 set expandtab       " tabs are spaces
-set autoindent      "
+set autoindent
 
 " UI
 set number
@@ -78,13 +86,19 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
+let g:fzf_layout = { 'down': '40%' }
 
-" netrw
-nmap <leader>t :Vexplore<CR>
-let g:netrw_liststyle = 3
-let g:netrw_banner = 0
-let g:netrw_browse_split = 4
-let g:netrw_winsize = 25
+" ale
+let g:ale_linters = {
+\   'go': ['gofmt', 'gopls', 'govet'],
+\}
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'go': ['goimports'],
+\   'javascript': ['eslint', 'prettier'],
+\   'ruby': ['rubocop'],
+\}
+let g:ale_fix_on_save = 1
 
 " lightline
 set noshowmode
@@ -99,9 +113,69 @@ let g:lightline = {
       \ },
       \ }
 
-" ale
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['eslint', 'prettier'],
-\}
-let g:ale_fix_on_save = 0
+" Neovim
+if has('nvim')
+  " Deoplete
+  let g:deoplete#enable_at_startup = 1
+
+  "Defx
+  nmap <leader>t :Defx -split=vertical -winwidth=50 -direction=topleft -columns=git:mark:indent:icons:filename:type<CR>
+
+  autocmd FileType defx call s:defx_my_settings()
+	function! s:defx_my_settings() abort
+	  " Define mappings
+	  nnoremap <silent><buffer><expr> <CR>
+	  \ defx#do_action('drop')
+	  nnoremap <silent><buffer><expr> c
+	  \ defx#do_action('copy')
+	  nnoremap <silent><buffer><expr> m
+	  \ defx#do_action('move')
+	  nnoremap <silent><buffer><expr> p
+	  \ defx#do_action('paste')
+	  nnoremap <silent><buffer><expr> l
+    \ defx#is_directory() ?
+    \ defx#do_action('open') :
+    \ 0
+	  nnoremap <silent><buffer><expr> o
+	  \ defx#do_action('open_tree', 'toggle')
+	  nnoremap <silent><buffer><expr> K
+	  \ defx#do_action('new_directory')
+	  nnoremap <silent><buffer><expr> N
+	  \ defx#do_action('new_file')
+	  nnoremap <silent><buffer><expr> d
+	  \ defx#do_action('remove')
+	  nnoremap <silent><buffer><expr> r
+	  \ defx#do_action('rename')
+	  nnoremap <silent><buffer><expr> !
+	  \ defx#do_action('execute_command')
+	  nnoremap <silent><buffer><expr> x
+	  \ defx#do_action('execute_system')
+	  nnoremap <silent><buffer><expr> yy
+	  \ defx#do_action('yank_path')
+	  nnoremap <silent><buffer><expr> .
+	  \ defx#do_action('toggle_ignored_files')
+	  nnoremap <silent><buffer><expr> h
+	  \ defx#do_action('cd', ['..'])
+	  nnoremap <silent><buffer><expr> q
+	  \ defx#do_action('quit')
+	  nnoremap <silent><buffer><expr> <Space>
+	  \ defx#do_action('toggle_select') . 'j'
+	  nnoremap <silent><buffer><expr> *
+	  \ defx#do_action('toggle_select_all')
+	  nnoremap <silent><buffer><expr> j
+	  \ line('.') == line('$') ? 'gg' : 'j'
+	  nnoremap <silent><buffer><expr> k
+	  \ line('.') == 1 ? 'G' : 'k'
+  endfunction
+
+
+  " ale
+  nnoremap <leader>e :ALEGoToDefinition<CR>
+else
+  " netrw
+  nmap <leader>t :Vexplore<CR>
+  let g:netrw_liststyle = 3
+  let g:netrw_banner = 0
+  let g:netrw_browse_split = 4
+  let g:netrw_winsize = 25
+endif
