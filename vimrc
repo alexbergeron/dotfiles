@@ -168,7 +168,6 @@ if has('nvim')
 	  \ line('.') == 1 ? 'G' : 'k'
   endfunction
 
-
   " ale
   nnoremap <leader>e :ALEGoToDefinition<CR>
 else
