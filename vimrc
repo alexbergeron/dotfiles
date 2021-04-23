@@ -20,6 +20,7 @@ Plug 'tpope/vim-sensible'
 Plug 'wincent/terminus'
 
 if has('nvim')
+  Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'kristijanhusak/defx-icons'
@@ -44,7 +45,7 @@ set cursorline
 set wildmenu            " visual autocomplete for menu
 set lazyredraw          " redraw only when we need to.
 set hidden              " hide buffer instead of closing (don't force :w)
-set re=1
+set re=0
 set ttyfast
 
 " Search
@@ -97,6 +98,9 @@ let g:ale_fixers = {
 \   'go': ['goimports'],
 \   'javascript': ['eslint', 'prettier'],
 \   'ruby': ['rubocop'],
+\   'typescript': ['eslint', 'prettier'],
+\   'markdown': ['prettier'],
+\   'yaml': ['prettier'],
 \}
 let g:ale_fix_on_save = 1
 
@@ -115,6 +119,9 @@ let g:lightline = {
 
 " Neovim
 if has('nvim')
+  " Volta
+  let g:node_host_prog = system('volta which neovim-node-host | tr -d "\n"')
+
   " Deoplete
   let g:deoplete#enable_at_startup = 1
 
