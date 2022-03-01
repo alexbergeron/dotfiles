@@ -1,3 +1,6 @@
-[submodule "slimzsh"]
-	path = slimzsh
-	url = https://github.com/changs/slimzsh.git
+[submodule "pure"]
+	path = pure
+	url = https://github.com/sindresorhus/pure.git
+[submodule "fsh"]
+	path = fsh
+	url = https://github.com/zdharma/fast-syntax-highlighting
